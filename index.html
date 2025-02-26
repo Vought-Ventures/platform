@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vought Ventures</title>
+  <style>
+    /* Base styles */
+    :root {
+      --primary: #0a0a14;
+      --secondary: #16213e;
+      --accent: #0f3460;
+      --text: #e1e1e6;
+      --highlight: #4a00e0;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+    
+    body {
+      background-color: var(--primary);
+      color: var(--text);
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+    }
+    
+    /* Background animation */
+    .bg-animation {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+    
+    .bg-animation span {
+      position: absolute;
+      display: block;
+      width: 20px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      animation: move 50s linear infinite;
+      bottom: -150px;
+    }
+    
+    @keyframes move {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+        border-radius: 0;
+      }
+      100% {
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0;
+        border-radius: 50%;
+      }
+    }
+    
+    /* Header */
+    header {
+      padding: 2rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      position: relative;
+      animation: fadeIn 0.8s ease-in-out;
+      letter-spacing: 1px;
+    }
+    
+    .logo::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: var(--highlight);
+      transition: width 0.3s ease;
+    }
+    
+    .logo:hover::after {
+      width: 100%;
+    }
+    
+    .data-room-btn {
+      background-color: transparent;
+      color: var(--text);
+      border: 1px solid var(--text);
+      padding: 0.5rem 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+      z-index: 10;
+    }
+    
+    .data-room-btn::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: var(--highlight);
+      top: 0;
+      left: -100%;
+      transition: all 0.3s ease;
+      z-index: -1;
+    }
+    
+    .data-room-btn:hover {
+      color: white;
+      border-color: var(--highlight);
+    }
+    
+    .data-room-btn:hover::before {
+      left: 0;
+    }
+    
+    /* Main content */
+    main {
+      padding: 5rem 5%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      text-align: center;
+      animation: fadeIn 1s ease-in-out;
+    }
+    
+    h1 {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      display: inline-block;
+      letter-spacing: 2px;
+    }
+    
+    h1::before, h1::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: var(--highlight);
+      border-radius: 50%;
+      opacity: 0.7;
+    }
+    
+    h1::before {
+      top: 0;
+      left: -20px;
+      animation: pulse 2s infinite;
+    }
+    
+    h1::after {
+      bottom: 0;
+      right: -20px;
+      animation: pulse 2s infinite 1s;
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 0.7;
+      }
+      50% {
+        transform: scale(1.5);
+        opacity: 0.5;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 0.7;
+      }
+    }
+    
+    .tagline {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: rgba(225, 225, 230, 0.7);
+      max-width: 600px;
+    }
+    
+    /* Animated elements */
+    .grid-element {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      opacity: 0.1;
+    }
+    
+    .grid-element::before, .grid-element::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--highlight), transparent);
+    }
+    
+    .grid-element::before {
+      top: 30%;
+      animation: horizontalLine 15s linear infinite;
+    }
+    
+    .grid-element::after {
+      top: 60%;
+      animation: horizontalLine 20s linear infinite reverse;
+    }
+    
+    @keyframes horizontalLine {
+      0% {
+        background-position: -100% 0;
+      }
+      100% {
+        background-position: 200% 0;
+      }
+    }
+    
+    /* Contact Us button */
+    .contact-btn {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background-color: var(--highlight);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(74, 0, 224, 0.3);
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+    
+    .contact-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 7px 20px rgba(74, 0, 224, 0.4);
+    }
+    
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .modal.show {
+      display: flex;
+      opacity: 1;
+    }
+    
+    .modal-content {
+      background-color: var(--secondary);
+      padding: 2rem;
+      border-radius: 5px;
+      width: 90%;
+      max-width: 500px;
+      position: relative;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+      border: 1px solid rgba(74, 0, 224, 0.3);
+      box-shadow: 0 0 30px rgba(74, 0, 224, 0.2);
+    }
+    
+    .modal.show .modal-content {
+      transform: translateY(0);
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    
+    .modal-title {
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      text-align: left;
+    }
+    
+    input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid rgba(225, 225, 230, 0.3);
+      background-color: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      border-radius: 3px;
+    }
+    
+    .submit-btn {
+      background-color: var(--highlight);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 3px;
+      cursor: pointer;
+      width: 100%;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .submit-btn:hover {
+      background-color: #5a17e0;
+    }
+    
+    .error-message {
+      color: #ff4757;
+      text-align: left;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      display: none;
+    }
+    
+    .error-message.show {
+      display: block;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Crypto elements */
+    .crypto-elements {
+      position: absolute;
+      bottom: 50px;
+      width: 100%;
+      height: 100px;
+      z-index: -1;
+      opacity: 0.1;
+    }
+    
+    .crypto-element {
+      position: absolute;
+      font-size: 30px;
+      animation: floatUpDown 10s ease-in-out infinite;
+    }
+    
+    @keyframes floatUpDown {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-30px);
+      }
+    }
+    
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+      
+      .tagline {
+        font-size: 1rem;
+      }
+      
+      .contact-btn {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        padding: 0.8rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background animation elements -->
+  <div class="bg-animation">
+    <span style="--i:11;"></span>
+    <span style="--i:12;"></span>
+    <span style="--i:24;"></span>
+    <span style="--i:10;"></span>
+    <span style="--i:14;"></span>
+    <span style="--i:23;"></span>
+    <span style="--i:18;"></span>
+    <span style="--i:16;"></span>
+    <span style="--i:19;"></span>
+    <span style="--i:20;"></span>
+    <span style="--i:22;"></span>
+    <span style="--i:25;"></span>
+    <span style="--i:18;"></span>
+    <span style="--i:21;"></span>
+    <span style="--i:15;"></span>
+    <span style="--i:13;"></span>
+    <span style="--i:26;"></span>
+    <span style="--i:17;"></span>
+    <span style="--i:13;"></span>
+    <span style="--i:28;"></span>
+  </div>
+  
+  <!-- Grid elements for the sophisticated look -->
+  <div class="grid-element"></div>
+  
+  <div class="crypto-elements">
+    <div class="crypto-element" style="left:10%; top: 20%;">₿</div>
+    <div class="crypto-element" style="left:25%; top: 40%;">Ξ</div>
+    <div class="crypto-element" style="left:40%; top: 10%;">₵</div>
+    <div class="crypto-element" style="left:55%; top: 30%;">Ł</div>
+    <div class="crypto-element" style="left:70%; top: 50%;">₮</div>
+    <div class="crypto-element" style="left:85%; top: 25%;">$</div>
+    <div class="crypto-element" style="left:15%; top: 60%;">¥</div>
+    <div class="crypto-element" style="left:65%; top: 15%;">元</div>
+  </div>
+  
+  <header>
+    <div class="logo-space"></div>
+    <button class="data-room-btn">DATA ROOM</button>
+  </header>
+  
+  <main>
+    <h1>Vought Ventures</h1>
+    <p class="tagline">Pioneering the intersection of financial technology and digital asset innovation.</p>
+  </main>
+  
+  <button class="contact-btn">Contact Us</button>
+  
+  <!-- Data Room Modal -->
+  <div class="modal" id="dataRoomModal">
+    <div class="modal-content">
+      <button class="close-modal">&times;</button>
+      <h2 class="modal-title">Data Room Access</h2>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" required>
+          <p class="error-message" id="emailError">Please enter a valid email address.</p>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" required>
+          <p class="error-message" id="passwordError">Password is incorrect.</p>
+        </div>
+        <button type="submit" class="submit-btn">Login</button>
+        <p class="error-message" id="loginError">Invalid email or password. Please try again.</p>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Contact Modal -->
+  <div class="modal" id="contactModal">
+    <div class="modal-content">
+      <button class="close-modal">&times;</button>
+      <h2 class="modal-title">Contact Us</h2>
+      <form id="contactForm">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" required>
+        </div>
+        <div class="form-group">
+          <label for="contactEmail">Email</label>
+          <input type="email" id="contactEmail" required>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <input type="text" id="message" required>
+        </div>
+        <button type="submit" class="submit-btn">Send Message</button>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+    // Background animation setup
+    document.addEventListener('DOMContentLoaded', function() {
+      const bgAnimation = document.querySelector('.bg-animation');
+      const spans = bgAnimation.querySelectorAll('span');
+      
+      spans.forEach(span => {
+        const size = Math.random() * 50 + 10;
+        const posX = Math.floor(Math.random() * window.innerWidth);
+        const delay = Math.random() * 20;
+        const duration = Math.random() * 10 + 30;
+        
+        span.style.width = `${size}px`;
+        span.style.height = `${size}px`;
+        span.style.left = `${posX}px`;
+        span.style.animationDelay = `${delay}s`;
+        span.style.animationDuration = `${duration}s`;
+      });
+    });
+    
+    // Modal functionality
+    const dataRoomBtn = document.querySelector('.data-room-btn');
+    const contactBtn = document.querySelector('.contact-btn');
+    const dataRoomModal = document.getElementById('dataRoomModal');
+    const contactModal = document.getElementById('contactModal');
+    const closeButtons = document.querySelectorAll('.close-modal');
+    
+    dataRoomBtn.addEventListener('click', () => {
+      dataRoomModal.classList.add('show');
+    });
+    
+    contactBtn.addEventListener('click', () => {
+      contactModal.classList.add('show');
+    });
+    
+    closeButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        dataRoomModal.classList.remove('show');
+        contactModal.classList.remove('show');
+      });
+    });
+    
+    // Close modal when clicking outside the content
+    window.addEventListener('click', (e) => {
+      if (e.target === dataRoomModal) {
+        dataRoomModal.classList.remove('show');
+      }
+      if (e.target === contactModal) {
+        contactModal.classList.remove('show');
+      }
+    });
+    
+    // Handle login form submission - always show error
+    const loginForm = document.getElementById('loginForm');
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+    const loginError = document.getElementById('loginError');
+    
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      // Reset error messages
+      emailError.classList.remove('show');
+      passwordError.classList.remove('show');
+      loginError.classList.remove('show');
+      
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        emailError.classList.add('show');
+        return;
+      }
+      
+      // Password validation - intentionally show error for any password
+      if (password.length === 0) {
+        passwordError.classList.add('show');
+      } else {
+        // Always show login error for any valid inputs
+        loginError.classList.add('show');
+      }
+    });
+    
+    // Handle contact form submission
+    const contactForm = document.getElementById('contactForm');
+    
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Thank you for your message. We will get back to you soon!');
+      contactModal.classList.remove('show');
+      contactForm.reset();
+    });
+  </script>
+</body>
+</html>
