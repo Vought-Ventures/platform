@@ -29,18 +29,7 @@
       min-height: 100vh;
     }
     
-    /* Spline 3D background container */
-    .spline-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: auto; /* Enable interaction with the Spline element */
-    }
-    
-    /* Background animation - reduced opacity since we have Spline */
+    /* Background animation */
     .bg-animation {
       position: absolute;
       top: 0;
@@ -49,7 +38,6 @@
       height: 100%;
       overflow: hidden;
       z-index: -1;
-      opacity: 0.5; /* Reduced opacity */
     }
     
     .bg-animation span {
@@ -81,13 +69,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 10;
-      position: relative;
-      pointer-events: none; /* Allow clicks to pass through to Spline */
-    }
-    
-    header > * {
-      pointer-events: auto; /* Re-enable interaction with header elements */
     }
     
     .logo-space {
@@ -124,21 +105,6 @@
       min-height: 60vh;
       text-align: center;
       animation: fadeIn 1s ease-in-out;
-      position: relative;
-      z-index: 5;
-      pointer-events: none; /* Allow interaction with elements behind */
-    }
-    
-    /* Frosted glass effect for content */
-    .glass-panel {
-      background: rgba(10, 10, 20, 0.3);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 2rem;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      pointer-events: auto; /* Re-enable interaction with the panel content */
     }
     
     h1 {
@@ -192,7 +158,7 @@
     .tagline {
       font-size: 1.2rem;
       margin-bottom: 2rem;
-      color: rgba(225, 225, 230, 0.9);
+      color: rgba(225, 225, 230, 0.7);
       max-width: 600px;
     }
     
@@ -249,8 +215,6 @@
       box-shadow: 0 4px 15px rgba(74, 0, 224, 0.3);
       transition: all 0.3s ease;
       z-index: 100;
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
     }
     
     .contact-btn:hover {
@@ -268,10 +232,6 @@
       font-size: 0.9rem;
       transition: all 0.3s ease;
       z-index: 100;
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
-      padding: 5px 10px;
-      border-radius: 5px;
     }
     
     .terms-link:hover {
@@ -391,14 +351,14 @@
       }
     }
     
-    /* Crypto elements - slightly reduced opacity */
+    /* Crypto elements */
     .crypto-elements {
       position: absolute;
       bottom: 50px;
       width: 100%;
       height: 100px;
-      z-index: 1;
-      opacity: 0.2;
+      z-index: -1;
+      opacity: 0.3;
     }
     
     .crypto-element {
@@ -433,13 +393,8 @@
       }
     }
   </style>
-  <!-- Add Spline script -->
-  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.75/build/spline-viewer.js"></script>
 </head>
 <body>
-  <!-- Place Spline viewer directly in the body -->
-  <spline-viewer url="undefined"></spline-viewer>
-  
   <!-- Background animation elements -->
   <div class="bg-animation">
     <span style="--i:11;"></span>
@@ -484,10 +439,8 @@
   </header>
   
   <main>
-    <div class="glass-panel">
-      <h1>VOUGHT VENTURES</h1>
-      <p class="tagline">Next-Gen Venture Studio Pioneering FinTech, Digital Assets, and Agile Innovation.</p>
-    </div>
+    <h1>VOUGHT VENTURES</h1>
+    <p class="tagline">Next-Gen Venture Studio Pioneering FinTech, Digital Assets, and Agile Innovation.</p>
   </main>
   
   <button class="contact-btn">Contact Us</button>
@@ -555,100 +508,6 @@
         span.style.left = `${posX}px`;
         span.style.animationDelay = `${delay}s`;
         span.style.animationDuration = `${duration}s`;
-      });
-      
-      // Setup slow random rotation for Spline scene
-      const splineViewer = document.getElementById('spline-viewer');
-      let splineApp = null;
-      
-      // Initialize rotation variables
-      let rotationX = 0;
-      let rotationY = 0;
-      let rotationZ = 0;
-      
-      // Target rotation values for smooth interpolation
-      let targetRotationX = 0;
-      let targetRotationY = 0;
-      let targetRotationZ = 0;
-      
-      // Generate new random rotation targets
-      function updateRotationTargets() {
-        // Small random changes to create gentle rotation
-        targetRotationX = rotationX + (Math.random() - 0.5) * 0.2;
-        targetRotationY = rotationY + (Math.random() - 0.5) * 0.2;
-        targetRotationZ = rotationZ + (Math.random() - 0.5) * 0.05; // Less Z rotation for stability
-        
-        // Schedule the next update
-        setTimeout(updateRotationTargets, 5000); // Change direction every 5 seconds
-      }
-      
-      // Listen for Spline to load
-      splineViewer.addEventListener('load', (e) => {
-        splineApp = e.target.application;
-        
-        if (splineApp) {
-          console.log('Spline scene loaded, starting animation');
-          
-          // Get the scene or main group object
-          // Try different approaches to find rotatable elements
-          let sceneObject = null;
-          
-          try {
-            // First approach: try to get the main scene
-            sceneObject = splineApp.findObjectByName('Scene');
-            
-            // If that doesn't work, try to get the root object
-            if (!sceneObject) {
-              sceneObject = splineApp.getObjectByName('root');
-            }
-            
-            // Last resort - try to get the first object in the scene
-            if (!sceneObject && splineApp.scene && splineApp.scene.children.length > 0) {
-              sceneObject = splineApp.scene.children[0];
-            }
-            
-            console.log('Found scene object to animate:', sceneObject);
-          } catch (err) {
-            console.warn('Could not find scene object to animate:', err);
-          }
-          
-          // Start generating random rotation targets
-          updateRotationTargets();
-          
-          // Animation loop
-          function animate() {
-            if (sceneObject) {
-              // Smoothly interpolate current rotation toward target rotation
-              rotationX += (targetRotationX - rotationX) * 0.01;
-              rotationY += (targetRotationY - rotationY) * 0.01;
-              rotationZ += (targetRotationZ - rotationZ) * 0.01;
-              
-              try {
-                // Apply rotation to the scene object
-                sceneObject.rotation.x = rotationX;
-                sceneObject.rotation.y = rotationY;
-                sceneObject.rotation.z = rotationZ;
-              } catch (err) {
-                console.warn('Error applying rotation:', err);
-                
-                // Alternative approach: Try to use the Spline API to rotate the camera instead
-                try {
-                  if (splineApp.camera) {
-                    splineApp.camera.positionTarget.x += (Math.sin(rotationY) * 0.001);
-                    splineApp.camera.positionTarget.y += (Math.sin(rotationX) * 0.001);
-                  }
-                } catch (cameraErr) {
-                  console.warn('Could not rotate camera either:', cameraErr);
-                }
-              }
-            }
-            
-            requestAnimationFrame(animate);
-          }
-          
-          // Start animation loop
-          animate();
-        }
       });
     });
     
