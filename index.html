@@ -433,13 +433,14 @@
       }
     }
   </style>
-  <!-- Add Spline script -->
+  <!-- Add Spline script and runtime for API access -->
   <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.75/build/spline-viewer.js"></script>
+  <script type="module" src="https://unpkg.com/@splinetool/runtime@1.9.75/build/runtime.js"></script>
 </head>
 <body>
   <!-- Spline 3D Scene Container -->
   <div class="spline-container">
-    <spline-viewer url="https://prod.spline.design/DV558bkjl6sNm4iN/scene.splinecode"></spline-viewer>
+    <spline-viewer id="spline-viewer" url="https://prod.spline.design/DV558bkjl6sNm4iN/scene.splinecode"></spline-viewer>
   </div>
   
   <!-- Background animation elements -->
@@ -557,6 +558,100 @@
         span.style.left = `${posX}px`;
         span.style.animationDelay = `${delay}s`;
         span.style.animationDuration = `${duration}s`;
+      });
+      
+      // Setup slow random rotation for Spline scene
+      const splineViewer = document.getElementById('spline-viewer');
+      let splineApp = null;
+      
+      // Initialize rotation variables
+      let rotationX = 0;
+      let rotationY = 0;
+      let rotationZ = 0;
+      
+      // Target rotation values for smooth interpolation
+      let targetRotationX = 0;
+      let targetRotationY = 0;
+      let targetRotationZ = 0;
+      
+      // Generate new random rotation targets
+      function updateRotationTargets() {
+        // Small random changes to create gentle rotation
+        targetRotationX = rotationX + (Math.random() - 0.5) * 0.2;
+        targetRotationY = rotationY + (Math.random() - 0.5) * 0.2;
+        targetRotationZ = rotationZ + (Math.random() - 0.5) * 0.05; // Less Z rotation for stability
+        
+        // Schedule the next update
+        setTimeout(updateRotationTargets, 5000); // Change direction every 5 seconds
+      }
+      
+      // Listen for Spline to load
+      splineViewer.addEventListener('load', (e) => {
+        splineApp = e.target.application;
+        
+        if (splineApp) {
+          console.log('Spline scene loaded, starting animation');
+          
+          // Get the scene or main group object
+          // Try different approaches to find rotatable elements
+          let sceneObject = null;
+          
+          try {
+            // First approach: try to get the main scene
+            sceneObject = splineApp.findObjectByName('Scene');
+            
+            // If that doesn't work, try to get the root object
+            if (!sceneObject) {
+              sceneObject = splineApp.getObjectByName('root');
+            }
+            
+            // Last resort - try to get the first object in the scene
+            if (!sceneObject && splineApp.scene && splineApp.scene.children.length > 0) {
+              sceneObject = splineApp.scene.children[0];
+            }
+            
+            console.log('Found scene object to animate:', sceneObject);
+          } catch (err) {
+            console.warn('Could not find scene object to animate:', err);
+          }
+          
+          // Start generating random rotation targets
+          updateRotationTargets();
+          
+          // Animation loop
+          function animate() {
+            if (sceneObject) {
+              // Smoothly interpolate current rotation toward target rotation
+              rotationX += (targetRotationX - rotationX) * 0.01;
+              rotationY += (targetRotationY - rotationY) * 0.01;
+              rotationZ += (targetRotationZ - rotationZ) * 0.01;
+              
+              try {
+                // Apply rotation to the scene object
+                sceneObject.rotation.x = rotationX;
+                sceneObject.rotation.y = rotationY;
+                sceneObject.rotation.z = rotationZ;
+              } catch (err) {
+                console.warn('Error applying rotation:', err);
+                
+                // Alternative approach: Try to use the Spline API to rotate the camera instead
+                try {
+                  if (splineApp.camera) {
+                    splineApp.camera.positionTarget.x += (Math.sin(rotationY) * 0.001);
+                    splineApp.camera.positionTarget.y += (Math.sin(rotationX) * 0.001);
+                  }
+                } catch (cameraErr) {
+                  console.warn('Could not rotate camera either:', cameraErr);
+                }
+              }
+            }
+            
+            requestAnimationFrame(animate);
+          }
+          
+          // Start animation loop
+          animate();
+        }
       });
     });
     
