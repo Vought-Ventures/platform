@@ -37,13 +37,7 @@
       width: 100%;
       height: 100%;
       z-index: 0;
-    }
-    
-    /* Canvas styling for Spline */
-    .spline-canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
+      pointer-events: auto; /* Enable interaction with the Spline element */
     }
     
     /* Background animation - reduced opacity since we have Spline */
@@ -440,86 +434,13 @@
     }
   </style>
   <!-- Add Spline script -->
-  <script type="module">
-    import { Application } from 'https://unpkg.com/@splinetool/runtime@1.9.75/build/runtime.js';
-    
-    // Wait for the page to load
-    window.addEventListener('load', function() {
-      // Create a new Spline application
-      const canvas = document.createElement('canvas');
-      canvas.className = 'spline-canvas';
-      const splineContainer = document.querySelector('.spline-container');
-      
-      // Clear the container and add the canvas
-      splineContainer.innerHTML = '';
-      splineContainer.appendChild(canvas);
-      
-      // Initialize the Spline application with direct runtime access
-      const app = new Application(canvas);
-      app.load('https://prod.spline.design/DV558bkjl6sNm4iN/scene.splinecode')
-        .then(() => {
-          console.log('Spline scene loaded successfully');
-          
-          // Initialize rotation variables
-          let rotationX = 0;
-          let rotationY = 0;
-          let rotationZ = 0;
-          
-          // Target rotation values for smooth interpolation
-          let targetRotationX = 0;
-          let targetRotationY = 0;
-          let targetRotationZ = 0;
-          
-          // Generate new random rotation targets
-          function updateRotationTargets() {
-            // Small random changes to create gentle rotation
-            targetRotationX = rotationX + (Math.random() - 0.5) * 0.1;
-            targetRotationY = rotationY + (Math.random() - 0.5) * 0.1;
-            targetRotationZ = rotationZ + (Math.random() - 0.5) * 0.02; // Less Z rotation
-            
-            // Schedule the next update
-            setTimeout(updateRotationTargets, 3000); // Change direction every 3 seconds
-          }
-          
-          // Start generating random rotation targets
-          updateRotationTargets();
-          
-          // Animation loop for rotation
-          function animate() {
-            // Smoothly interpolate current rotation toward target rotation
-            rotationX += (targetRotationX - rotationX) * 0.005;
-            rotationY += (targetRotationY - rotationY) * 0.005;
-            rotationZ += (targetRotationZ - rotationZ) * 0.005;
-            
-            // Rotate the whole scene using the main camera
-            if (app.camera) {
-              // Orbit the camera slightly to create scene rotation effect
-              const radius = 5;
-              const cameraX = Math.sin(rotationY) * radius;
-              const cameraZ = Math.cos(rotationY) * radius;
-              const cameraY = Math.sin(rotationX) * 2;
-              
-              app.camera.position = { x: cameraX, y: cameraY, z: cameraZ };
-              
-              // Ensure camera is still looking at center
-              app.camera.lookAt = { x: 0, y: 0, z: 0 };
-            }
-            
-            requestAnimationFrame(animate);
-          }
-          
-          // Start animation loop
-          animate();
-        })
-        .catch(error => {
-          console.error('Error loading Spline scene:', error);
-        });
-    });
-  </script>
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.75/build/spline-viewer.js"></script>
 </head>
 <body>
   <!-- Spline 3D Scene Container -->
-  <div class="spline-container"></div>
+  <div class="spline-container">
+    <spline-viewer url="undefined"></spline-viewer>
+  </div>
   
   <!-- Background animation elements -->
   <div class="bg-animation">
