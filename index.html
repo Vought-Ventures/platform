@@ -29,7 +29,18 @@
       min-height: 100vh;
     }
     
-    /* Background animation */
+    /* Spline 3D background container */
+    .spline-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      pointer-events: none; /* Allows clicks to pass through to elements behind */
+    }
+    
+    /* Background animation - reduced opacity since we have Spline */
     .bg-animation {
       position: absolute;
       top: 0;
@@ -38,6 +49,7 @@
       height: 100%;
       overflow: hidden;
       z-index: -1;
+      opacity: 0.5; /* Reduced opacity */
     }
     
     .bg-animation span {
@@ -69,6 +81,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      z-index: 10;
+      position: relative;
     }
     
     .logo-space {
@@ -105,6 +119,8 @@
       min-height: 60vh;
       text-align: center;
       animation: fadeIn 1s ease-in-out;
+      position: relative;
+      z-index: 5;
     }
     
     h1 {
@@ -160,6 +176,9 @@
       margin-bottom: 2rem;
       color: rgba(225, 225, 230, 0.7);
       max-width: 600px;
+      background-color: rgba(10, 10, 20, 0.7); /* Semi-transparent background for better readability */
+      padding: 10px 20px;
+      border-radius: 5px;
     }
     
     /* Animated elements */
@@ -351,14 +370,14 @@
       }
     }
     
-    /* Crypto elements */
+    /* Crypto elements - slightly reduced opacity */
     .crypto-elements {
       position: absolute;
       bottom: 50px;
       width: 100%;
       height: 100px;
-      z-index: -1;
-      opacity: 0.3;
+      z-index: 1;
+      opacity: 0.2;
     }
     
     .crypto-element {
@@ -393,8 +412,15 @@
       }
     }
   </style>
+  <!-- Add Spline script -->
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@0.9.508/build/spline-viewer.js"></script>
 </head>
 <body>
+  <!-- Spline 3D Scene Container -->
+  <div class="spline-container">
+    <spline-viewer url="https://prod.spline.design/DV558bkjl6sNm4iN/scene.splinecode"></spline-viewer>
+  </div>
+  
   <!-- Background animation elements -->
   <div class="bg-animation">
     <span style="--i:11;"></span>
