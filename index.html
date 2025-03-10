@@ -8,7 +8,7 @@
   <style>
     /* Base styles */
     :root {
-      --primary: #0a0a14;
+      --primary: transparent; /* Removed purple background */
       --secondary: #16213e;
       --accent: #0f3460;
       --text: #e1e1e6;
@@ -46,39 +46,9 @@
       height: 100%;
     }
     
-    /* Background animation - reduced opacity to blend with Spline */
+    /* Background animation - REMOVED */
     .bg-animation {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      z-index: -1;
-      opacity: 0.3; /* Reduced opacity */
-    }
-    
-    .bg-animation span {
-      position: absolute;
-      display: block;
-      width: 20px;
-      height: 20px;
-      background: rgba(255, 255, 255, 0.05);
-      animation: move 25s linear infinite;
-      bottom: -150px;
-    }
-    
-    @keyframes move {
-      0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-        border-radius: 0;
-      }
-      100% {
-        transform: translateY(-1000px) rotate(720deg);
-        opacity: 0;
-        border-radius: 50%;
-      }
+      display: none; /* Removed falling blocks */
     }
     
     /* Header */
@@ -96,7 +66,7 @@
     }
     
     .data-room-btn {
-      background-color: transparent;
+      background-color: rgba(0, 0, 0, 0.5);
       color: var(--text);
       border: 1px solid var(--text);
       padding: 0.5rem 1.5rem;
@@ -138,6 +108,9 @@
       font-weight: 900;
       color: var(--text);
       text-shadow: 0 0 10px rgba(74, 0, 224, 0.5);
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
     }
     
     h1::before, h1::after {
@@ -180,46 +153,16 @@
     .tagline {
       font-size: 1.2rem;
       margin-bottom: 2rem;
-      color: rgba(225, 225, 230, 0.7);
+      color: rgba(225, 225, 230, 0.9);
       max-width: 600px;
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
     }
     
     /* Animated elements */
     .grid-element {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: -1;
-      opacity: 0.05; /* Reduced opacity */
-    }
-    
-    .grid-element::before, .grid-element::after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--highlight), transparent);
-    }
-    
-    .grid-element::before {
-      top: 30%;
-      animation: horizontalLine 15s linear infinite;
-    }
-    
-    .grid-element::after {
-      top: 60%;
-      animation: horizontalLine 20s linear infinite reverse;
-    }
-    
-    @keyframes horizontalLine {
-      0% {
-        background-position: -100% 0;
-      }
-      100% {
-        background-position: 200% 0;
-      }
+      display: none; /* Hidden as requested */
     }
     
     /* Contact Us button */
@@ -373,20 +316,22 @@
       }
     }
     
-    /* Crypto elements */
+    /* Crypto elements - moved to front */
     .crypto-elements {
       position: absolute;
       bottom: 50px;
       width: 100%;
       height: 100px;
-      z-index: -1;
-      opacity: 0.2; /* Reduced opacity */
+      z-index: 5; /* Increased to be in front of Spline */
+      opacity: 0.6; /* Increased visibility */
     }
     
     .crypto-element {
       position: absolute;
       font-size: 30px;
       animation: floatUpDown 10s ease-in-out infinite;
+      color: rgba(255, 255, 255, 0.9); /* Brighter color */
+      text-shadow: 0 0 8px rgba(74, 0, 224, 0.8); /* Added glow */
     }
     
     @keyframes floatUpDown {
@@ -419,36 +364,10 @@
 <body>
   <!-- Spline background container -->
   <div class="spline-container">
-    <spline-viewer url="https://prod.spline.design/lf8E-8Xva-klAZFf/scene.splinecode"></spline-viewer>
+    <spline-viewer id="spline" url="https://prod.spline.design/lf8E-8Xva-klAZFf/scene.splinecode"></spline-viewer>
   </div>
   
-  <!-- Background animation elements -->
-  <div class="bg-animation">
-    <span style="--i:11;"></span>
-    <span style="--i:12;"></span>
-    <span style="--i:24;"></span>
-    <span style="--i:10;"></span>
-    <span style="--i:14;"></span>
-    <span style="--i:23;"></span>
-    <span style="--i:18;"></span>
-    <span style="--i:16;"></span>
-    <span style="--i:19;"></span>
-    <span style="--i:20;"></span>
-    <span style="--i:22;"></span>
-    <span style="--i:25;"></span>
-    <span style="--i:18;"></span>
-    <span style="--i:21;"></span>
-    <span style="--i:15;"></span>
-    <span style="--i:13;"></span>
-    <span style="--i:26;"></span>
-    <span style="--i:17;"></span>
-    <span style="--i:13;"></span>
-    <span style="--i:28;"></span>
-  </div>
-  
-  <!-- Grid elements for the sophisticated look -->
-  <div class="grid-element"></div>
-  
+  <!-- Crypto elements - moved to front of Spline -->
   <div class="crypto-elements">
     <div class="crypto-element" style="left:10%; top: 20%;">₿</div>
     <div class="crypto-element" style="left:25%; top: 40%;">Ξ</div>
@@ -519,25 +438,6 @@
   </div>
   
   <script>
-    // Background animation setup
-    document.addEventListener('DOMContentLoaded', function() {
-      const bgAnimation = document.querySelector('.bg-animation');
-      const spans = bgAnimation.querySelectorAll('span');
-      
-      spans.forEach(span => {
-        const size = Math.random() * 50 + 10;
-        const posX = Math.floor(Math.random() * window.innerWidth);
-        const delay = Math.random() * 20;
-        const duration = Math.random() * 10 + 30;
-        
-        span.style.width = `${size}px`;
-        span.style.height = `${size}px`;
-        span.style.left = `${posX}px`;
-        span.style.animationDelay = `${delay}s`;
-        span.style.animationDuration = `${duration}s`;
-      });
-    });
-    
     // Modal functionality
     document.addEventListener('DOMContentLoaded', function() {
       const dataRoomBtn = document.querySelector('.data-room-btn');
@@ -545,6 +445,47 @@
       const dataRoomModal = document.getElementById('dataRoomModal');
       const contactModal = document.getElementById('contactModal');
       const closeButtons = document.querySelectorAll('.close-modal');
+      
+      // Spline looping functionality
+      const splineViewer = document.getElementById('spline');
+      
+      // Function to make Spline loop
+      function setupSplineLooping() {
+        splineViewer.addEventListener('load', () => {
+          // Access the Spline application instance
+          const spline = splineViewer.application;
+          
+          if (spline) {
+            // Get animation duration if available
+            const duration = spline.duration || 5; // fallback to 5 seconds if duration not available
+            
+            // Function to check if animation has ended and restart it
+            function checkAndRestart() {
+              // Get current time
+              const currentTime = spline.currentTime || 0;
+              
+              // If we're at or near the end of the animation, restart
+              if (currentTime >= duration - 0.1) {
+                spline.currentTime = 0;
+              }
+              
+              // Continue the loop
+              requestAnimationFrame(checkAndRestart);
+            }
+            
+            // Start checking for end of animation
+            checkAndRestart();
+          } else {
+            // If spline.application isn't available immediately, try again after a short delay
+            setTimeout(() => {
+              setupSplineLooping();
+            }, 1000);
+          }
+        });
+      }
+      
+      // Initialize Spline looping
+      setupSplineLooping();
       
       if (dataRoomBtn) {
         dataRoomBtn.addEventListener('click', () => {
