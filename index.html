@@ -106,11 +106,33 @@
       display: inline-block;
       letter-spacing: 4px;
       font-weight: 900;
-      color: var(--text);
-      text-shadow: 0 0 10px rgba(74, 0, 224, 0.5);
-      background-color: rgba(0, 0, 0, 0.3);
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
+      color: white; /* Make text fully visible */
+      text-shadow: 
+        0 0 5px rgba(255, 255, 255, 0.8),
+        0 0 15px rgba(255, 255, 255, 0.5); /* Glow effect */
+    }
+    
+    /* Text outline frost effect */
+    h1 span {
+      position: relative;
+      z-index: 2;
+      /* Text is normal and visible */
+      -webkit-text-fill-color: white;
+      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
+      /* Add filter for a slight frost halo */
+      filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
+    }
+    
+    /* Frost outline */
+    h1 span::before {
+      content: "VOUGHT VENTURES";
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: -1;
+      -webkit-text-fill-color: transparent;
+      -webkit-text-stroke: 8px rgba(255, 255, 255, 0.15);
+      filter: blur(8px);
     }
     
     h1::before, h1::after {
@@ -129,10 +151,30 @@
       animation: pulse 2s infinite;
     }
     
+    /* Override h1::after for the glass effect */
+    h1 span {
+      position: relative;
+      z-index: 2; /* Keep text on top */
+    }
+    
     h1::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
       bottom: 0;
       right: -20px;
       animation: pulse 2s infinite 1s;
+      background-color: var(--highlight);
+      border-radius: 50%;
+      opacity: 0.7;
+    }
+    
+    /* Glass text effect - for outline only */
+    .glass-text {
+      position: relative;
+      display: inline-block;
+      color: white;
     }
     
     @keyframes pulse {
@@ -153,11 +195,28 @@
     .tagline {
       font-size: 1.2rem;
       margin-bottom: 2rem;
-      color: rgba(225, 225, 230, 0.9);
+      color: white; /* Clear visible text */
       max-width: 600px;
-      background-color: rgba(0, 0, 0, 0.3);
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    }
+    
+    .tagline span {
+      position: relative;
+      z-index: 2;
+      /* Add subtle glow */
+      filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+    }
+    
+    /* Frost effect for tagline */
+    .tagline span::before {
+      content: "Next-Gen Venture Studio Pioneering FinTech, Digital Assets, and Agile Innovation.";
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: -1;
+      color: transparent;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+      filter: blur(5px);
     }
     
     /* Animated elements */
@@ -316,30 +375,46 @@
       }
     }
     
-    /* Crypto elements - moved to front */
+    /* Crypto elements - made lighter and orbiting */
     .crypto-elements {
       position: absolute;
-      bottom: 50px;
       width: 100%;
-      height: 100px;
-      z-index: 5; /* Increased to be in front of Spline */
-      opacity: 0.6; /* Increased visibility */
+      height: 100vh;
+      z-index: 5; /* In front of Spline */
+      top: 0;
+      left: 0;
     }
     
     .crypto-element {
       position: absolute;
       font-size: 30px;
-      animation: floatUpDown 10s ease-in-out infinite;
-      color: rgba(255, 255, 255, 0.9); /* Brighter color */
-      text-shadow: 0 0 8px rgba(74, 0, 224, 0.8); /* Added glow */
+      color: rgba(255, 255, 255, 0.6); /* Lighter color */
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.4); /* Softer glow */
+      animation: orbit 20s linear infinite;
+      transform-origin: 50% 50%;
     }
     
-    @keyframes floatUpDown {
-      0%, 100% {
-        transform: translateY(0);
+    /* Different speeds and directions for variety */
+    .crypto-element:nth-child(odd) {
+      animation-duration: 25s;
+      animation-direction: reverse;
+    }
+    
+    .crypto-element:nth-child(3n) {
+      animation-duration: 30s;
+    }
+    
+    .crypto-element:nth-child(3n+1) {
+      animation-duration: 35s;
+    }
+    
+    /* Orbit animation around the center */
+    @keyframes orbit {
+      0% {
+        transform: rotate(0deg) translateX(150px) rotate(0deg);
       }
-      50% {
-        transform: translateY(-30px);
+      100% {
+        transform: rotate(360deg) translateX(150px) rotate(-360deg);
       }
     }
     
@@ -367,16 +442,16 @@
     <spline-viewer id="spline" url="https://prod.spline.design/lf8E-8Xva-klAZFf/scene.splinecode" auto-play auto-rotate loading-anim auto-rec="true" auto-replay="true" play-mode="replay" plays-inline></spline-viewer>
   </div>
   
-  <!-- Crypto elements - moved to front of Spline -->
+  <!-- Crypto elements - positioned around center -->
   <div class="crypto-elements">
-    <div class="crypto-element" style="left:10%; top: 20%;">₿</div>
-    <div class="crypto-element" style="left:25%; top: 40%;">Ξ</div>
-    <div class="crypto-element" style="left:40%; top: 10%;">₵</div>
-    <div class="crypto-element" style="left:55%; top: 30%;">Ł</div>
-    <div class="crypto-element" style="left:70%; top: 50%;">₮</div>
-    <div class="crypto-element" style="left:85%; top: 25%;">$</div>
-    <div class="crypto-element" style="left:15%; top: 60%;">¥</div>
-    <div class="crypto-element" style="left:65%; top: 15%;">元</div>
+    <div class="crypto-element" style="top: 30%; left: 50%; transform: translate(-50%, -50%) rotate(0deg) translateX(150px);">₿</div>
+    <div class="crypto-element" style="top: 30%; left: 50%; transform: translate(-50%, -50%) rotate(45deg) translateX(180px);">Ξ</div>
+    <div class="crypto-element" style="top: 30%; left: 50%; transform: translate(-50%, -50%) rotate(90deg) translateX(200px);">₵</div>
+    <div class="crypto-element" style="top: 30%; left: 50%; transform: translate(-50%, -50%) rotate(135deg) translateX(170px);">Ł</div>
+    <div class="crypto-element" style="top: 30%; left: 50%; transform: translate(-50%, -50%) rotate(180deg) translateX(190px);">₮</div>
+    <div class="crypto-element" style="top: 30%; left: 50%; transform: translate(-50%, -50%) rotate(225deg) translateX(160px);">$</div>
+    <div class="crypto-element" style="top: 30%; left: 50%; transform: translate(-50%, -50%) rotate(270deg) translateX(210px);">¥</div>
+    <div class="crypto-element" style="top: 30%; left: 50%; transform: translate(-50%, -50%) rotate(315deg) translateX(180px);">元</div>
   </div>
   
   <header>
@@ -385,8 +460,8 @@
   </header>
   
   <main>
-    <h1>VOUGHT VENTURES</h1>
-    <p class="tagline">Next-Gen Venture Studio Pioneering FinTech, Digital Assets, and Agile Innovation.</p>
+    <h1><span class="glass-text">VOUGHT VENTURES</span></h1>
+    <p class="tagline"><span class="glass-text">Next-Gen Venture Studio Pioneering FinTech, Digital Assets, and Agile Innovation.</span></p>
   </main>
   
   <button class="contact-btn">Contact Us</button>
