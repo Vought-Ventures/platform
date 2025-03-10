@@ -56,7 +56,6 @@
       overflow: hidden;
       z-index: -1;
       opacity: 0.3; /* Reduced opacity */
-      visibility: hidden; /* Hide initially to let Spline show */
     }
     
     .bg-animation span {
@@ -127,7 +126,7 @@
       text-align: center;
       animation: fadeIn 1s ease-in-out;
       position: relative;
-      z-index: 5;
+      z-index: 10;
     }
     
     h1 {
@@ -418,7 +417,10 @@
   </style>
 </head>
 <body>
-  <!-- Move Spline after other elements so it appears on top -->
+  <!-- Spline background container -->
+  <div class="spline-container">
+    <spline-viewer url="https://prod.spline.design/lf8E-8Xva-klAZFf/scene.splinecode"></spline-viewer>
+  </div>
   
   <!-- Background animation elements -->
   <div class="bg-animation">
@@ -470,11 +472,6 @@
   
   <button class="contact-btn">Contact Us</button>
   <a href="#" class="terms-link">PP & Terms</a>
-  
-  <!-- Spline background container -->
-  <div class="spline-container">
-    <spline-viewer url="https://prod.spline.design/lf8E-8Xva-klAZFf/scene.splinecode"></spline-viewer>
-  </div>
   
   <!-- Data Room Modal -->
   <div class="modal" id="dataRoomModal">
