@@ -106,27 +106,11 @@
       display: inline-block;
       letter-spacing: 4px;
       font-weight: 900;
-      color: white; /* Make text fully visible */
-    }
-    
-    /* Text frost effect */
-    h1 span {
-      position: relative;
-      z-index: 2;
-      /* Normal white text */
-      color: rgba(255, 255, 255, 0.9);
-    }
-    
-    /* Frost outline */
-    h1 span::before {
-      content: "VOUGHT VENTURES";
-      position: absolute;
-      left: 0;
-      top: 0;
-      z-index: -1;
-      color: transparent;
-      -webkit-text-stroke: 2px rgba(255, 255, 255, 0.2);
-      filter: blur(4px);
+      color: var(--text);
+      text-shadow: 0 0 10px rgba(74, 0, 224, 0.5);
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
     }
     
     h1::before, h1::after {
@@ -145,30 +129,10 @@
       animation: pulse 2s infinite;
     }
     
-    /* Override h1::after for the glass effect */
-    h1 span {
-      position: relative;
-      z-index: 2; /* Keep text on top */
-    }
-    
     h1::after {
-      content: '';
-      position: absolute;
-      width: 10px;
-      height: 10px;
       bottom: 0;
       right: -20px;
       animation: pulse 2s infinite 1s;
-      background-color: var(--highlight);
-      border-radius: 50%;
-      opacity: 0.7;
-    }
-    
-    /* Glass text effect - for outline only */
-    .glass-text {
-      position: relative;
-      display: inline-block;
-      color: white;
     }
     
     @keyframes pulse {
@@ -189,24 +153,11 @@
     .tagline {
       font-size: 1.2rem;
       margin-bottom: 2rem;
-      color: rgba(255, 255, 255, 0.9); /* Clear visible text */
+      color: rgba(225, 225, 230, 0.9);
       max-width: 600px;
-    }
-    
-    .tagline span {
-      position: relative;
-    }
-    
-    /* Frost effect for tagline */
-    .tagline span::before {
-      content: "Next-Gen Venture Studio Pioneering FinTech, Digital Assets, and Agile Innovation.";
-      position: absolute;
-      left: 0;
-      top: 0;
-      z-index: -1;
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.15);
-      filter: blur(3px);
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
     }
     
     /* Animated elements */
@@ -365,59 +316,46 @@
       }
     }
     
-    /* Crypto elements - simplified positioning above and below text */
+    /* Crypto elements - made lighter and orbiting */
     .crypto-elements {
       position: absolute;
       width: 100%;
+      height: 100vh;
       z-index: 5; /* In front of Spline */
       top: 0;
       left: 0;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-    }
-    
-    .crypto-top {
-      display: flex;
-      gap: 30px;
-      margin-bottom: 100px;
-    }
-    
-    .crypto-bottom {
-      display: flex;
-      gap: 30px;
-      margin-top: 100px;
     }
     
     .crypto-element {
+      position: absolute;
       font-size: 30px;
-      color: rgba(255, 255, 255, 0.4); /* Lighter color */
-      animation: floatUpDown 8s ease-in-out infinite;
+      color: rgba(255, 255, 255, 0.6); /* Lighter color */
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.4); /* Softer glow */
+      animation: orbit 20s linear infinite;
+      transform-origin: 50% 50%;
     }
     
-    /* Different timings for variety */
+    /* Different speeds and directions for variety */
     .crypto-element:nth-child(odd) {
-      animation-duration: 7s;
+      animation-duration: 25s;
+      animation-direction: reverse;
     }
     
     .crypto-element:nth-child(3n) {
-      animation-duration: 9s;
+      animation-duration: 30s;
     }
     
     .crypto-element:nth-child(3n+1) {
-      animation-duration: 10s;
+      animation-duration: 35s;
     }
     
-    /* Simple float animation */
-    @keyframes floatUpDown {
-      0%, 100% {
-        transform: translateY(0);
+    /* Orbit animation around the center */
+    @keyframes orbit {
+      0% {
+        transform: rotate(0deg) translateX(150px) rotate(0deg);
       }
-      50% {
-        transform: translateY(-15px);
+      100% {
+        transform: rotate(360deg) translateX(150px) rotate(-360deg);
       }
     }
     
@@ -440,40 +378,21 @@
   </style>
 </head>
 <body>
-  <!-- Spline background container using iframe for looping -->
+  <!-- Spline background container -->
   <div class="spline-container">
-    <iframe id="spline-frame" src="https://my.spline.design/untitled-lf8e8xvaklazff/" frameborder="0" width="100%" height="100%"></iframe>
+    <spline-viewer id="spline" url="https://prod.spline.design/lf8E-8Xva-klAZFf/scene.splinecode" auto-play auto-rotate loading-anim auto-rec="true" auto-replay="true" play-mode="replay" plays-inline></spline-viewer>
   </div>
   
-  <script>
-    // Function to loop Spline animation by reloading iframe
-    document.addEventListener('DOMContentLoaded', function() {
-      const iframe = document.getElementById('spline-frame');
-      
-      // Function to reload iframe periodically
-      function loopSpline() {
-        iframe.src = iframe.src; // Reloads iframe content
-      }
-      
-      // Adjust timing (in milliseconds) to match your animation's length
-      setInterval(loopSpline, 15000); // 15 seconds
-    });
-  </script>
-  
-  <!-- Crypto elements - positioned above and below text -->
+  <!-- Crypto elements - moved to front of Spline -->
   <div class="crypto-elements">
-    <div class="crypto-top">
-      <div class="crypto-element">₿</div>
-      <div class="crypto-element">Ξ</div>
-      <div class="crypto-element">₵</div>
-      <div class="crypto-element">Ł</div>
-    </div>
-    <div class="crypto-bottom">
-      <div class="crypto-element">₮</div>
-      <div class="crypto-element">$</div>
-      <div class="crypto-element">¥</div>
-      <div class="crypto-element">元</div>
-    </div>
+    <div class="crypto-element" style="left:10%; top: 20%;">₿</div>
+    <div class="crypto-element" style="left:25%; top: 40%;">Ξ</div>
+    <div class="crypto-element" style="left:40%; top: 10%;">₵</div>
+    <div class="crypto-element" style="left:55%; top: 30%;">Ł</div>
+    <div class="crypto-element" style="left:70%; top: 50%;">₮</div>
+    <div class="crypto-element" style="left:85%; top: 25%;">$</div>
+    <div class="crypto-element" style="left:15%; top: 60%;">¥</div>
+    <div class="crypto-element" style="left:65%; top: 15%;">元</div>
   </div>
   
   <header>
@@ -482,8 +401,8 @@
   </header>
   
   <main>
-    <h1><span class="glass-text">VOUGHT VENTURES</span></h1>
-    <p class="tagline"><span class="glass-text">Next-Gen Venture Studio Pioneering FinTech, Digital Assets, and Agile Innovation.</span></p>
+    <h1>VOUGHT VENTURES</h1>
+    <p class="tagline">Next-Gen Venture Studio Pioneering FinTech, Digital Assets, and Agile Innovation.</p>
   </main>
   
   <button class="contact-btn">Contact Us</button>
@@ -543,25 +462,115 @@
       const contactModal = document.getElementById('contactModal');
       const closeButtons = document.querySelectorAll('.close-modal');
       
-      // Spline iframe looping functionality
-      const iframe = document.getElementById('spline-frame');
+      // More robust Spline looping functionality
+      const splineViewer = document.getElementById('spline');
+      let loopInterval;
       
-      // Only set up iframe looping if the iframe exists
-      if (iframe) {
-        // Function to reload iframe periodically
-        function loopSpline() {
-          iframe.src = iframe.src; // Reloads iframe content
+      // Function that attempts multiple approaches to loop the Spline animation
+      function setupSplineLooping() {
+        // Method 1: Using the built-in onLoop event if available
+        window.onSplineLoad = function(splineApp) {
+          console.log("Spline loaded via onSplineLoad callback");
+          if (splineApp) {
+            // If the API provides a way to set looping
+            if (typeof splineApp.setLoop === 'function') {
+              splineApp.setLoop(true);
+              console.log("Looping enabled via setLoop API");
+            }
+          }
+        };
+        
+        // Method 2: Using the load event
+        splineViewer.addEventListener('load', () => {
+          console.log("Spline viewer load event fired");
+          attemptLooping();
+        });
+        
+        // Method 3: Polling for the application to be available
+        loopInterval = setInterval(attemptLooping, 1000);
+        
+        function attemptLooping() {
+          try {
+            // Different ways Spline might expose its API
+            const splineApp = 
+              splineViewer.application || 
+              window.splineApp || 
+              (typeof splineViewer.getApplication === 'function' && splineViewer.getApplication());
+            
+            if (splineApp) {
+              console.log("Spline application found:", splineApp);
+              
+              // Clear the polling interval once we've found the app
+              clearInterval(loopInterval);
+              
+              // Try multiple approaches to enable looping
+              if (typeof splineApp.setLoop === 'function') {
+                splineApp.setLoop(true);
+                console.log("Looping enabled via setLoop API");
+              } else if (typeof splineApp.play === 'function') {
+                // If there's a play method, try to use it with loop:true
+                try {
+                  splineApp.play({loop: true});
+                  console.log("Looping enabled via play API");
+                } catch (e) {
+                  // Fallback to basic play
+                  splineApp.play();
+                  console.log("Animation started via play API without loop option");
+                }
+              }
+              
+              // Fallback method using animation time reset
+              setupAnimationReset(splineApp);
+            }
+          } catch (error) {
+            console.log("Attempt to access Spline failed:", error);
+          }
         }
         
-        // Adjust timing (in milliseconds) to match your animation's length
-        setInterval(loopSpline, 15000); // 15 seconds
+        // Final fallback: manually reset animation time
+        function setupAnimationReset(splineApp) {
+          if (!splineApp) return;
+          
+          const checkInterval = setInterval(() => {
+            try {
+              // Different possible properties where duration might be stored
+              const duration = 
+                splineApp.duration || 
+                splineApp.animationDuration || 
+                (splineApp.animation && splineApp.animation.duration) || 
+                5; // fallback duration
+              
+              const currentTime = 
+                splineApp.currentTime || 
+                (splineApp.animation && splineApp.animation.currentTime) || 
+                0;
+              
+              console.log(`Animation time: ${currentTime}/${duration}`);
+              
+              // If near the end, reset to beginning
+              if (currentTime >= duration - 0.1 || currentTime === 0) {
+                console.log("Resetting animation time to 0");
+                
+                // Try multiple approaches to restart
+                if (typeof splineApp.setCurrentTime === 'function') {
+                  splineApp.setCurrentTime(0);
+                } else if (typeof splineApp.play === 'function') {
+                  splineApp.play();
+                } else if (splineApp.currentTime !== undefined) {
+                  splineApp.currentTime = 0;
+                } else if (splineApp.animation && splineApp.animation.currentTime !== undefined) {
+                  splineApp.animation.currentTime = 0;
+                }
+              }
+            } catch (error) {
+              console.log("Error in animation reset:", error);
+            }
+          }, 100); // Check more frequently
+        }
       }
       
-      if (dataRoomBtn) {
-        dataRoomBtn.addEventListener('click', () => {
-          dataRoomModal.classList.add('show');
-        });
-      }
+      // Initialize Spline looping
+      setupSplineLooping();
       
       if (dataRoomBtn) {
         dataRoomBtn.addEventListener('click', () => {
