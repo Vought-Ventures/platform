@@ -22,12 +22,13 @@
       font-family: 'Arial', sans-serif;
     }
     
-    body {
+    html, body {
       background-color: var(--primary);
       color: var(--text);
-      overflow-x: hidden;
+      overflow: hidden;
       position: relative;
-      min-height: 100vh;
+      height: 100%;
+      width: 100%;
     }
     
     /* Spline background */
@@ -59,6 +60,7 @@
       align-items: center;
       position: relative;
       z-index: 10;
+      height: 100px;
     }
     
     .logo-space {
@@ -89,12 +91,12 @@
     
     /* Main content */
     main {
-      padding: 5rem 5%;
+      padding: 0 5%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 60vh;
+      height: calc(100% - 100px); /* Subtract header height */
       text-align: center;
       animation: fadeIn 1s ease-in-out;
       position: relative;
@@ -102,11 +104,11 @@
     }
     
     h1 {
-      font-size: 4rem;
-      margin-bottom: 1.5rem;
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
       position: relative;
       display: inline-block;
-      letter-spacing: 4px;
+      letter-spacing: 3px;
       font-weight: 900;
       color: var(--text);
       text-shadow: 0 0 10px rgba(74, 0, 224, 0.5);
@@ -156,8 +158,8 @@
     }
     
     .tagline {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
       color: rgba(225, 225, 230, 0.9);
       max-width: 600px;
       background-color: rgba(0, 0, 0, 0.4);
@@ -379,26 +381,50 @@
     
     /* Responsive styles */
     @media (max-width: 768px) {
+      header {
+        padding: 1rem 5%;
+      }
+      
       h1 {
-        font-size: 2.5rem;
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        padding: 0.4rem 0.8rem;
       }
       
       .tagline {
-        font-size: 1rem;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        padding: 0.4rem 0.8rem;
       }
       
       .contact-btn {
-        bottom: 1.5rem;
-        right: 1.5rem;
-        padding: 0.8rem 1.5rem;
+        bottom: 1rem;
+        right: 1rem;
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+      }
+      
+      .terms-link {
+        bottom: 1rem;
+        left: 1rem;
+        font-size: 0.8rem;
       }
       
       .crypto-elements {
-        gap: 15px;
+        gap: 10px;
       }
       
       .crypto-element {
-        font-size: 16px;
+        font-size: 14px;
+      }
+      
+      .logo-space {
+        width: 150px;
+      }
+      
+      .data-room-btn {
+        padding: 0.4rem 1rem;
+        font-size: 0.8rem;
       }
     }
   </style>
