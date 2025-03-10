@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Gradients from original design -->
+  <defs>
+    <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6a11cb" />
+      <stop offset="100%" stop-color="#4a00e0" />
+    </linearGradient>
+    <linearGradient id="gradient2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4a00e0" />
+      <stop offset="100%" stop-color="#2d0a8a" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Main abstract shape - first V with original purple gradient -->
+  <path d="M40,40 L100,160 L160,40 L130,40 L100,100 L70,40 Z" fill="url(#gradient1)"/>
+  
+  <!-- Second V with original purple gradient -->
+  <path d="M60,60 L100,140 L140,60 L120,60 L100,100 L80,60 Z" fill="url(#gradient2)" opacity="0.8"/>
+  
+  <!-- Center circle in white -->
+  <circle cx="100" cy="100" r="6" fill="#FFFFFF"/>
+</svg>
