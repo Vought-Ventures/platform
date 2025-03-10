@@ -91,6 +91,8 @@
     
     .logo-space {
       width: 200px;
+      display: flex;
+      align-items: center;
     }
     
     .data-room-btn {
@@ -350,13 +352,13 @@
       }
     }
     
-    /* Crypto elements - positioned in header center */
+    /* Crypto elements - positioned in header left */
     .crypto-elements {
       display: flex;
       gap: 15px;
       z-index: 15;
-      flex: 1;
-      justify-content: center;
+      justify-content: flex-start;
+      margin-left: 10px;
     }
     
     .crypto-element {
@@ -436,14 +438,15 @@
   </div>
   
   <header>
-    <div class="logo-space"></div>
-    <!-- Crypto elements - positioned in header center -->
-    <div class="crypto-elements">
-      <div class="crypto-element" data-currency="bitcoin">₿</div>
-      <div class="crypto-element" data-currency="ethereum">Ξ</div>
-      <div class="crypto-element" data-currency="dollar">$</div>
-      <div class="crypto-element" data-currency="yuan">元</div>
-      <div class="crypto-element" data-currency="yen">¥</div>
+    <div class="logo-space">
+      <!-- Crypto elements positioned on left -->
+      <div class="crypto-elements">
+        <div class="crypto-element" data-currency="bitcoin">₿</div>
+        <div class="crypto-element" data-currency="ethereum">Ξ</div>
+        <div class="crypto-element" data-currency="dollar">$</div>
+        <div class="crypto-element" data-currency="yuan">元</div>
+        <div class="crypto-element" data-currency="yen">¥</div>
+      </div>
     </div>
     <button class="data-room-btn">DATA ROOM</button>
   </header>
