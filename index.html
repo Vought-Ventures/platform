@@ -364,7 +364,7 @@
 <body>
   <!-- Spline background container -->
   <div class="spline-container">
-    <spline-viewer id="spline" url="https://prod.spline.design/lf8E-8Xva-klAZFf/scene.splinecode"></spline-viewer>
+    <spline-viewer id="spline" url="https://prod.spline.design/lf8E-8Xva-klAZFf/scene.splinecode" loop="true"></spline-viewer>
   </div>
   
   <!-- Crypto elements - moved to front of Spline -->
@@ -446,42 +446,111 @@
       const contactModal = document.getElementById('contactModal');
       const closeButtons = document.querySelectorAll('.close-modal');
       
-      // Spline looping functionality
+      // More robust Spline looping functionality
       const splineViewer = document.getElementById('spline');
+      let loopInterval;
       
-      // Function to make Spline loop
+      // Function that attempts multiple approaches to loop the Spline animation
       function setupSplineLooping() {
+        // Method 1: Using the built-in onLoop event if available
+        window.onSplineLoad = function(splineApp) {
+          console.log("Spline loaded via onSplineLoad callback");
+          if (splineApp) {
+            // If the API provides a way to set looping
+            if (typeof splineApp.setLoop === 'function') {
+              splineApp.setLoop(true);
+              console.log("Looping enabled via setLoop API");
+            }
+          }
+        };
+        
+        // Method 2: Using the load event
         splineViewer.addEventListener('load', () => {
-          // Access the Spline application instance
-          const spline = splineViewer.application;
-          
-          if (spline) {
-            // Get animation duration if available
-            const duration = spline.duration || 5; // fallback to 5 seconds if duration not available
+          console.log("Spline viewer load event fired");
+          attemptLooping();
+        });
+        
+        // Method 3: Polling for the application to be available
+        loopInterval = setInterval(attemptLooping, 1000);
+        
+        function attemptLooping() {
+          try {
+            // Different ways Spline might expose its API
+            const splineApp = 
+              splineViewer.application || 
+              window.splineApp || 
+              (typeof splineViewer.getApplication === 'function' && splineViewer.getApplication());
             
-            // Function to check if animation has ended and restart it
-            function checkAndRestart() {
-              // Get current time
-              const currentTime = spline.currentTime || 0;
+            if (splineApp) {
+              console.log("Spline application found:", splineApp);
               
-              // If we're at or near the end of the animation, restart
-              if (currentTime >= duration - 0.1) {
-                spline.currentTime = 0;
+              // Clear the polling interval once we've found the app
+              clearInterval(loopInterval);
+              
+              // Try multiple approaches to enable looping
+              if (typeof splineApp.setLoop === 'function') {
+                splineApp.setLoop(true);
+                console.log("Looping enabled via setLoop API");
+              } else if (typeof splineApp.play === 'function') {
+                // If there's a play method, try to use it with loop:true
+                try {
+                  splineApp.play({loop: true});
+                  console.log("Looping enabled via play API");
+                } catch (e) {
+                  // Fallback to basic play
+                  splineApp.play();
+                  console.log("Animation started via play API without loop option");
+                }
               }
               
-              // Continue the loop
-              requestAnimationFrame(checkAndRestart);
+              // Fallback method using animation time reset
+              setupAnimationReset(splineApp);
             }
-            
-            // Start checking for end of animation
-            checkAndRestart();
-          } else {
-            // If spline.application isn't available immediately, try again after a short delay
-            setTimeout(() => {
-              setupSplineLooping();
-            }, 1000);
+          } catch (error) {
+            console.log("Attempt to access Spline failed:", error);
           }
-        });
+        }
+        
+        // Final fallback: manually reset animation time
+        function setupAnimationReset(splineApp) {
+          if (!splineApp) return;
+          
+          const checkInterval = setInterval(() => {
+            try {
+              // Different possible properties where duration might be stored
+              const duration = 
+                splineApp.duration || 
+                splineApp.animationDuration || 
+                (splineApp.animation && splineApp.animation.duration) || 
+                5; // fallback duration
+              
+              const currentTime = 
+                splineApp.currentTime || 
+                (splineApp.animation && splineApp.animation.currentTime) || 
+                0;
+              
+              console.log(`Animation time: ${currentTime}/${duration}`);
+              
+              // If near the end, reset to beginning
+              if (currentTime >= duration - 0.1 || currentTime === 0) {
+                console.log("Resetting animation time to 0");
+                
+                // Try multiple approaches to restart
+                if (typeof splineApp.setCurrentTime === 'function') {
+                  splineApp.setCurrentTime(0);
+                } else if (typeof splineApp.play === 'function') {
+                  splineApp.play();
+                } else if (splineApp.currentTime !== undefined) {
+                  splineApp.currentTime = 0;
+                } else if (splineApp.animation && splineApp.animation.currentTime !== undefined) {
+                  splineApp.animation.currentTime = 0;
+                }
+              }
+            } catch (error) {
+              console.log("Error in animation reset:", error);
+            }
+          }, 100); // Check more frequently
+        }
       }
       
       // Initialize Spline looping
