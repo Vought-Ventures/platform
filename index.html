@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vought Ventures</title>
-  <script type="module" src="https://unpkg.com/@splinetool/viewer@0.9.490/build/spline-viewer.js"></script>
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.75/build/spline-viewer.js"></script>
   <style>
     /* Base styles */
     :root {
@@ -108,9 +108,12 @@
       font-weight: 900;
       color: var(--text);
       text-shadow: 0 0 10px rgba(74, 0, 224, 0.5);
-      background-color: rgba(0, 0, 0, 0.3);
+      background-color: rgba(0, 0, 0, 0.4);
       padding: 0.5rem 1rem;
       border-radius: 8px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
     
     h1::before, h1::after {
@@ -155,9 +158,12 @@
       margin-bottom: 2rem;
       color: rgba(225, 225, 230, 0.9);
       max-width: 600px;
-      background-color: rgba(0, 0, 0, 0.3);
+      background-color: rgba(0, 0, 0, 0.4);
       padding: 0.5rem 1rem;
       border-radius: 8px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
     
     /* Animated elements */
@@ -316,12 +322,13 @@
       }
     }
     
-    /* Crypto elements - updated to be below text and smaller */
+    /* Crypto elements - positioned between heading and tagline */
     .crypto-elements {
       display: flex;
       justify-content: center;
       gap: 20px;
-      margin-top: 10px;
+      margin-top: -5px;
+      margin-bottom: 15px;
       z-index: 5;
     }
     
@@ -391,7 +398,7 @@
 <body>
   <!-- Spline background container -->
   <div class="spline-container">
-    <spline-viewer id="spline" url="https://prod.spline.design/lf8E-8Xva-klAZFf/scene.splinecode" auto-play auto-rotate loading-anim auto-rec="true" auto-replay="true" play-mode="replay" plays-inline></spline-viewer>
+    <spline-viewer url="https://prod.spline.design/lf8E-8Xva-klAZFf/scene.splinecode"></spline-viewer>
   </div>
   
   <header>
@@ -408,8 +415,8 @@
       <div class="crypto-element">₿</div>
       <div class="crypto-element">Ξ</div>
       <div class="crypto-element">$</div>
-      <div class="crypto-element">¥</div>
       <div class="crypto-element">元</div>
+      <div class="crypto-element">¥</div>
     </div>
   </main>
   
@@ -471,7 +478,7 @@
       const closeButtons = document.querySelectorAll('.close-modal');
       
       // More robust Spline looping functionality
-      const splineViewer = document.getElementById('spline');
+      const splineViewer = document.querySelector('spline-viewer');
       let loopInterval;
       
       // Function that attempts multiple approaches to loop the Spline animation
